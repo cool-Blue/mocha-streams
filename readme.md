@@ -1,3 +1,8 @@
+### Second level pipe breaks if chai assertion fails in mocha test
+#### Build
+    $ npm install
+#### [SO Question](http://stackoverflow.com/q/38538793/2670182)  
+
 I was trying to test a browserify transform with mocha but I wanted to stream the output from `b.bundle` through a prettify transform before piping it to a file.  All this inside a `describe` clause.
 
 The [b.bundle()][1] method in browserify returns a stream but also accepts a call-back to which it passes it's output synchronously.  
