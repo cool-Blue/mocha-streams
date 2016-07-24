@@ -22,5 +22,16 @@
     "js-beautify": "^1.6.3"
   },
   "author": "cool.blue",
-  "license": "MIT"
+  "license": "MIT",
+  "directories": {
+    "test": "test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/cool-Blue/mocha-streams.git"
+  },
+  "bugs": {
+    "url": "https://github.com/cool-Blue/mocha-streams/issues"
+  },
+  "homepage": "https://github.com/cool-Blue/mocha-streams#readme"
 }

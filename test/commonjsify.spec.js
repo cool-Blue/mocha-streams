@@ -3,7 +3,9 @@
 var expect = require('chai').expect;
 
 var through       = require('through2'),
-    prettifySynch = require('js-beautify');
+    prettifySynch = require('js-beautify'),
+    util = require('util');
+
 
 var fs = require('fs');
 var glob = require('glob').sync;
@@ -11,6 +13,16 @@ var browserify = require('browserify');
 
 describe('test-streams', function() {
     var output = __dirname + '/output/';
+    function listenAll(stream, excl) {
+
+        var _excl = Array.isArray(excl) ? excl : [excl];
+        ['unpipe', 'finish', 'cork', 'close', 'drain', 'error', 'end', 'readable'].forEach(function(e) {
+            stream.on(e, function(evt) {
+                if(!_excl.includes(evt)) util.log(`${e} event: ${evt}`)
+            })
+        })
+    }
+
     var prettify = (function() {
         var chunks = [];
 
@@ -23,15 +35,16 @@ describe('test-streams', function() {
             return Buffer.concat(chunks).toString('utf8')
         }
 
-        function endTest(cb) {
+        function end(cb) {
             var content = getContent();
             this.push(prettifySynch(content));
             this.push(null);
             cb();
         }
 
-        return {stream: through(write, endTest), buffer: getContent}
+        return {stream: through(write, end), buffer: getContent}
     })();
+    listenAll(prettify.stream, ['data']);
 
     function synchOut(err, src) {
         if(err) throw err;
@@ -46,6 +59,9 @@ describe('test-streams', function() {
         })
     });
 
+    var writeBundle = fs.createWriteStream.bind(fs, output + 'bundle.js')();
+    listenAll(writeBundle, ['data']);
+
     var bundle = function(cb) {
         var fixtures = __dirname + '/fixtures';
         browserify({noParse: false})
@@ -59,7 +75,7 @@ describe('test-streams', function() {
                 }
             })
             .pipe(prettify.stream)
-            .pipe(fs.createWriteStream(output + 'bundle.js'));
+            .pipe(writeBundle)
     };
 
     it('is forced a fail to see what happens fail', function(done) {
