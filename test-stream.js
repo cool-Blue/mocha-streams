@@ -47,3 +47,5 @@ browserify()
     .pipe(prettify.stream)
     .pipe(fs.createWriteStream(__dirname + '/test/output/jquery.expose.cjs.js'))
 
+var a = ['1'];
+console.log(typeof a.find)

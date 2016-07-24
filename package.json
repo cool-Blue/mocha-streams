@@ -12,8 +12,11 @@
     "browserify"
   ],
   "dependencies": {
+    "command-line-args": "^3.0.0",
     "glob": "^7.0.5",
     "gulp": "^3.9.1",
+    "left-pad": "^1.1.1",
+    "log-events": "^1.0.0",
     "through2": "^2.0.1"
   },
   "devDependencies": {
